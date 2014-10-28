@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="edu.cmu.cs.coin.emot"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <!-- minSdkVersion must be version 14 or higher because otherwise we can't
+      get their information on their calendar through a calendar content provider -->
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="21" />
+    
+    <!-- Permission to read the calendar -->
+    <uses-permission android:name = "android.permission.READ_CALENDAR"/>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".DatabaseHelper"
+            android:label="@string/title_activity_database_helper" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.cmu.cs.coin.emot.MainActivity" />
+        </activity>
+        <activity
+            android:name=".DatabaseContract"
+            android:label="@string/title_activity_database_contract" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.cmu.cs.coin.emot.MainActivity" />
+        </activity>
+        <activity
+            android:name=".CalendarIntegration"
+            android:label="@string/title_activity_calendar_integration" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.cmu.cs.coin.emot.MainActivity" />
+        </activity>
+    </application>
+
+</manifest>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">EmoT</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="welcome_text">Welcome to EmoT</string>
+    <string name="feeling_prompt">How are you feeling?</string>
+    <string name="title_activity_database_contract">DatabaseContract</string>
+    <string name="title_activity_database_helper">DatabaseHelper</string>
+    <string name="title_activity_calendar_integration">Calendar Integration</string>
+
+</resources>
