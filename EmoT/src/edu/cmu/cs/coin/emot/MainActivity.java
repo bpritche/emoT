@@ -1,101 +1,63 @@
 package edu.cmu.cs.coin.emot;
 
-import java.util.ArrayList;
-import edu.cmu.cs.coin.emot.R;
-import android.app.Activity;
-import android.content.ContentValues;
-import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.app.ActionBar;
+import android.app.ActionBar.Tab;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.speech.RecognizerIntent;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.TextView;
-import android.widget.Toast;
-import edu.cmu.cs.coin.emot.DatabaseContract.EmotionData;
 
-public class MainActivity extends Activity implements OnClickListener {
-
-	protected static final int REQUEST_OK = 1;
+public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
 	
-	//Create new database
-	protected SQLiteDatabase db;
+	private ViewPager viewPager;
+	private TabsPagerAdapter mAdapter;
+	private ActionBar actionBar;
+	private String[] tabs = { "Home", "Patterns"};
+	
+	//Action bar stuff
+	//This tab will tell you your emotions during a particular event                  
+	ActionBar.Tab homeTab, patternTab;
+	Fragment fragmentPatternTab = new FragmentPatternTab();
+	Fragment fragmentHomeTab = new FragmentHomeTab();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		findViewById(R.id.button1).setOnClickListener(this);
 		
-		DatabaseHelper dbHelper = new DatabaseHelper(this.getApplicationContext());
-		db = dbHelper.getWritableDatabase();
+		//Create a new action bar and a tab for event info
+		actionBar = getActionBar();
+		mAdapter = new TabsPagerAdapter(getSupportFragmentManager());
+		actionBar.setHomeButtonEnabled(false);
+		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		viewPager = (ViewPager) findViewById(R.id.pager);
+		viewPager.setAdapter(mAdapter);
+	
+	// Adding Tabs
+    for (String tab_name : tabs) {
+        actionBar.addTab(actionBar.newTab().setText(tab_name)
+                .setTabListener(this));
+        }
 	}
-	
-	@Override
-	public void onClick(View v) {
-	Intent i = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-	         i.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, "en-US");
-	        	 try {
-	             startActivityForResult(i, REQUEST_OK);
-	         } catch (Exception e) {
-	        	 	Toast.makeText(this, "Error initializing speech to text engine.", Toast.LENGTH_LONG).show();
-	         }
-	}
-	
-	public void checkDatabase() {
-		Cursor emotionCursor = db.query(EmotionData.TABLE_NAME, null, null, null, null, null, null);
-	
-		// Iterate over the rows
-		int id = 1;
-		while (emotionCursor.moveToNext()) {
-			String debugStr = "Database lookup" + Integer.toString(id);
-			
-			//Pull out the value of each column - for now, we're just looking
-			// at the time and the text given, though we'll have more in the future
-			long timeStamp = emotionCursor.getLong(
-					emotionCursor.getColumnIndex(EmotionData.TIME));
-			Log.d(debugStr, "Timestamp " + Long.toString(timeStamp));
-			
-			String emotionText = emotionCursor.getString(
-					emotionCursor.getColumnIndex(EmotionData.EMOTION_TEXT));
-			Log.d(debugStr, "Emotion text " + emotionText);
-			
-			id++;
-		}
-	}
-	
-	public long insertEmotionData(String emotionText) {
-		
-		//This will give us the current time in milliseconds since Jan. 1, 1970, 00:00 UTC
-		// KEEP THIS IN MIND when looking up this data later
-		long systemTime = System.currentTimeMillis();
-		//For now, I'm just using this to test that our calendar is working
-		CalendarIntegration.getInstances(this.getContentResolver(), systemTime-1, systemTime+1);
-		
-		ContentValues values = new ContentValues();
-		values.put(EmotionData.TIME, systemTime);
-		values.put(EmotionData.EMOTION_TEXT, emotionText);
-		
-		long newRowID = db.insert(EmotionData.TABLE_NAME, null, values);
-		return newRowID;
-	}	
-	
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-	        super.onActivityResult(requestCode, resultCode, data);
-	        if (requestCode==REQUEST_OK  && resultCode==RESULT_OK) {
-	        		ArrayList<String> thingsYouSaid = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-	        		String emotionText = thingsYouSaid.get(0);
-	        		((TextView)findViewById(R.id.text1)).setText(emotionText);
-	        		//Put this data into the database
-	        		insertEmotionData(emotionText);
-	        		
-	        		checkDatabase();
-	        }
-	        
-	    }
 
 
+	@Override
+	public void onTabSelected(Tab tab, FragmentTransaction ft) {
+		//On tab selected
+		//show its respective fragment view
+		Log.d("Debug", "Tab selected");
+		viewPager.setCurrentItem(tab.getPosition());
+	}
+
+	@Override
+	public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+		
+	}
+
+	@Override
+	public void onTabReselected(Tab tab, FragmentTransaction ft) {
+		
+	}
 }

@@ -9,5 +9,10 @@
     <string name="title_activity_database_contract">DatabaseContract</string>
     <string name="title_activity_database_helper">DatabaseHelper</string>
     <string name="title_activity_calendar_integration">Calendar Integration</string>
+    <string name="title_activity_fragment_pattern_tab">FragmentPatternTab</string>
+    <string name="pattern_tab_name">Patterns</string>
+    <string name="title_activity_fragment_home_tab">FragmentHomeTab</string>
+    <string name="home_tab_name">Home</string>
+    <string name="title_activity_my_tab_listener">MyTabListener</string>
 
 </resources>

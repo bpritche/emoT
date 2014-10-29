@@ -4,14 +4,16 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
-    <!-- minSdkVersion must be version 14 or higher because otherwise we can't
-      get their information on their calendar through a calendar content provider -->
+    <!--
+      minSdkVersion must be version 14 or higher because otherwise we can't
+      get their information on their calendar through a calendar content provider
+    -->
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="21" />
-    
+
     <!-- Permission to read the calendar -->
-    <uses-permission android:name = "android.permission.READ_CALENDAR"/>
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
 
     <application
         android:allowBackup="true"
@@ -44,6 +46,29 @@
         <activity
             android:name=".CalendarIntegration"
             android:label="@string/title_activity_calendar_integration" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.cmu.cs.coin.emot.MainActivity" />
+        </activity>
+        <activity
+            android:name=".FragmentPatternTab"
+            android:label="@string/title_activity_fragment_pattern_tab" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.cmu.cs.coin.emot.MainActivity" />
+        </activity>
+        <activity
+            android:name=".FragmentHomeTab"
+            android:label="@string/title_activity_fragment_home_tab"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.cmu.cs.coin.emot.MainActivity" />
+        </activity>
+        <activity
+            android:name=".MyTabListener"
+            android:label="@string/title_activity_my_tab_listener"
+            android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.cmu.cs.coin.emot.MainActivity" />
